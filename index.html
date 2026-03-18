@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tim Zinin × Claude Code — 6-Week Productivity Audit</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #fafaf8;
+  --card: #ffffff;
+  --text: #1a1a1a;
+  --text-secondary: #555;
+  --accent: #6C5CE7;
+  --accent2: #00B894;
+  --accent3: #FD79A8;
+  --accent4: #FDCB6E;
+  --accent5: #0984E3;
+  --border: #e8e8e4;
+  --shadow: 0 2px 20px rgba(0,0,0,0.06);
+  --shadow-hover: 0 8px 40px rgba(108,92,231,0.15);
+  --radius: 16px;
+  --gradient: linear-gradient(135deg, #6C5CE7 0%, #0984E3 50%, #00B894 100%);
+  --gradient-warm: linear-gradient(135deg, #FD79A8 0%, #FDCB6E 100%);
+  --gradient-cool: linear-gradient(135deg, #6C5CE7 0%, #A29BFE 100%);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* === HERO === */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 50%, rgba(108,92,231,0.08) 0%, transparent 50%),
+              radial-gradient(circle at 70% 30%, rgba(0,184,148,0.06) 0%, transparent 50%),
+              radial-gradient(circle at 50% 80%, rgba(253,121,168,0.05) 0%, transparent 50%);
+  animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(30px, -30px) rotate(1deg); }
+  66% { transform: translate(-20px, 20px) rotate(-1deg); }
+}
+
+.hero-content { position: relative; z-index: 1; max-width: 900px; }
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  animation: fadeUp 0.8s ease;
+}
+
+.hero-badge .dot {
+  width: 8px; height: 8px;
+  background: var(--accent2);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.8s ease 0.1s both;
+}
+
+.hero h1 .gradient-text {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto 3rem;
+  animation: fadeUp 0.8s ease 0.2s both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === MEGA METRICS === */
+.mega-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  max-width: 900px;
+  width: 100%;
+  animation: fadeUp 0.8s ease 0.3s both;
+}
+
+.mega-metric {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.mega-metric:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--accent);
+}
+
+.mega-metric .number {
+  font-size: 2.5rem;
+  font-weight: 900;
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.mega-metric .label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.3rem;
+}
+
+/* === SECTIONS === */
+section {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-header h2 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.section-header .subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+}
+
+/* === TIMELINE === */
+.timeline {
+  position: relative;
+  padding: 2rem 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--gradient);
+  transform: translateX(-50%);
+  border-radius: 3px;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease;
+}
+
+.timeline-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.timeline-item:nth-child(odd) { flex-direction: row; }
+.timeline-item:nth-child(even) { flex-direction: row-reverse; }
+
+.timeline-content {
+  width: calc(50% - 30px);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.timeline-content:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+.timeline-dot {
+  width: 16px;
+  height: 16px;
+  background: var(--accent);
+  border-radius: 50%;
+  border: 3px solid var(--bg);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  box-shadow: 0 0 0 4px rgba(108,92,231,0.2);
+}
+
+.timeline-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.timeline-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.timeline-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.timeline-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.tag-revenue { background: rgba(0,184,148,0.1); color: #00B894; }
+.tag-tool { background: rgba(108,92,231,0.1); color: #6C5CE7; }
+.tag-product { background: rgba(253,121,168,0.1); color: #FD79A8; }
+.tag-infra { background: rgba(9,132,227,0.1); color: #0984E3; }
+
+/* === CHARTS GRID === */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+}
+
+.chart-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.chart-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+.chart-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chart-card h3 .icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+/* === INSIGHT CARDS === */
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.insight-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.insight-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.insight-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-4px) !important;
+}
+
+.insight-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+
+.insight-card.critical::before { background: var(--gradient-warm); }
+.insight-card.opportunity::before { background: var(--gradient); }
+.insight-card.tool::before { background: var(--gradient-cool); }
+
+.insight-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 1rem;
+}
+
+.insight-card.critical .insight-icon { background: rgba(253,121,168,0.1); }
+.insight-card.opportunity .insight-icon { background: rgba(108,92,231,0.1); }
+.insight-card.tool .insight-icon { background: rgba(9,132,227,0.1); }
+
+.insight-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.insight-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* === REVENUE SECTION === */
+.revenue-path {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.revenue-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.revenue-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-4px);
+}
+
+.revenue-card .price {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 0.3rem;
+}
+
+.revenue-card .price-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.revenue-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.revenue-card p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.revenue-card .status-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.badge-ready { background: rgba(0,184,148,0.1); color: #00B894; }
+.badge-wip { background: rgba(253,203,110,0.2); color: #E17055; }
+.badge-new { background: rgba(108,92,231,0.1); color: #6C5CE7; }
+
+/* === ACTION PLAN === */
+.action-plan {
+  counter-reset: action;
+}
+
+.action-step {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  padding: 2rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.action-step.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.action-step:hover {
+  box-shadow: var(--shadow-hover);
+  border-color: var(--accent);
+}
+
+.step-number {
+  counter-increment: action;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 12px;
+  background: var(--gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-size: 1.2rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.step-content h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.step-content .timeframe {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.step-content p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.step-content .impact {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 0.5rem;
+  padding: 3px 10px;
+  background: rgba(0,184,148,0.1);
+  color: #00B894;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* === TOOLS ECOSYSTEM === */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.tool-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.tool-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-3px);
+  border-color: var(--accent);
+}
+
+.tool-card .tool-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0.8rem;
+}
+
+.tool-card .tool-icon {
+  font-size: 1.5rem;
+}
+
+.tool-card .tool-name {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.tool-card .tool-status {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.status-active { background: rgba(0,184,148,0.1); color: #00B894; }
+.status-new { background: rgba(108,92,231,0.1); color: #6C5CE7; }
+.status-recommended { background: rgba(253,203,110,0.2); color: #E17055; }
+
+.tool-card .tool-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* === DIAGNOSIS === */
+.diagnosis-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.diagnosis-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+}
+
+.diagnosis-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.diagnosis-item {
+  display: flex;
+  gap: 0.8rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+
+.diagnosis-item:last-child { border-bottom: none; }
+
+.diagnosis-item .bullet {
+  width: 6px;
+  height: 6px;
+  min-width: 6px;
+  border-radius: 50%;
+  margin-top: 8px;
+}
+
+.bullet-red { background: #FF6B6B; }
+.bullet-green { background: #00B894; }
+.bullet-yellow { background: #FDCB6E; }
+
+.diagnosis-item p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.diagnosis-item strong { color: var(--text); }
+
+/* === FOOTER === */
+footer {
+  text-align: center;
+  padding: 3rem 2rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+footer .sig {
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 0.5rem;
+}
+
+/* === SCROLL INDICATOR === */
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(10px); }
+}
+
+.scroll-arrow {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--text-secondary);
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+  opacity: 0.5;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .timeline::before { left: 20px; }
+  .timeline-item,
+  .timeline-item:nth-child(even) { flex-direction: row !important; }
+  .timeline-content { width: calc(100% - 50px); margin-left: 40px !important; }
+  .timeline-dot { left: 20px; }
+  .charts-grid { grid-template-columns: 1fr; }
+  .diagnosis-grid { grid-template-columns: 1fr; }
+  .mega-metrics { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* === ANIMATED NUMBER === */
+.count-up { font-variant-numeric: tabular-nums; }
+
+/* === GRADIENT DIVIDER === */
+.divider {
+  height: 2px;
+  background: var(--gradient);
+  border: none;
+  border-radius: 2px;
+  margin: 0 auto;
+  max-width: 200px;
+  opacity: 0.3;
+}
+
+/* === NAV === */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(250,250,248,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  padding: 0.8rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: transform 0.3s ease;
+}
+
+.nav.hidden { transform: translateY(-100%); }
+
+.nav-logo {
+  font-weight: 800;
+  font-size: 0.9rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--accent); }
+
+/* === QUOTE === */
+.quote-block {
+  background: var(--card);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 2rem;
+  margin: 2rem 0;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+}
+
+.quote-block .author {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+}
+
+/* === PROGRESS BAR === */
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--gradient);
+  transition: width 1.5s ease;
+}
+
+/* Wide card */
+.wide-card {
+  grid-column: 1 / -1;
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav hidden" id="nav">
+  <div class="nav-logo">TZ × CC</div>
+  <ul class="nav-links">
+    <li><a href="#timeline">Timeline</a></li>
+    <li><a href="#analytics">Analytics</a></li>
+    <li><a href="#diagnosis">Diagnosis</a></li>
+    <li><a href="#revenue">Revenue</a></li>
+    <li><a href="#tools">Tools</a></li>
+    <li><a href="#action">Action Plan</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Productivity Audit — 18 марта 2026
+    </div>
+    <h1>
+      6 недель с <span class="gradient-text">Claude Code</span>
+      <br>Аудит. Инсайты. Стратегия.
+    </h1>
+    <p>42 репозитория. 16 MCP серверов. 10+ продуктов. Полный разбор первых 6 недель и план выхода на $10K+/мес MRR</p>
+
+    <div class="mega-metrics">
+      <div class="mega-metric">
+        <div class="number count-up" data-target="42">0</div>
+        <div class="label">Репозиториев</div>
+      </div>
+      <div class="mega-metric">
+        <div class="number count-up" data-target="16">0</div>
+        <div class="label">MCP серверов</div>
+      </div>
+      <div class="mega-metric">
+        <div class="number count-up" data-target="17">0</div>
+        <div class="label">Скиллов</div>
+      </div>
+      <div class="mega-metric">
+        <div class="number count-up" data-target="10">0</div>
+        <div class="label">Хуков</div>
+      </div>
+      <div class="mega-metric">
+        <div class="number count-up" data-target="294">0</div>
+        <div class="label">Тестов</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>Листай вниз</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="section-header">
+    <h2>Timeline: от нуля до экосистемы</h2>
+    <p class="subtitle">Хронология 6 недель с Claude Code</p>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <div class="timeline-date">5-8 февраля</div>
+        <div class="timeline-title">Фундамент</div>
+        <div class="timeline-desc">Zinin Corporation, СБОРКА, КРМКТЛ, Frozen Nail — 4 core-системы за 3 дня. Первый деплой на Contabo.</div>
+        <span class="timeline-tag tag-product">Core Systems</span>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <div class="timeline-date">11-21 февраля</div>
+        <div class="timeline-title">Инфраструктура + боты</div>
+        <div class="timeline-desc">sborka.work запущен, GitHub Pages (timzinin.com), Docker Compose на Contabo, 16 MCP серверов подключены.</div>
+        <span class="timeline-tag tag-infra">Infrastructure</span>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <div class="timeline-date">23 фев - 5 марта</div>
+        <div class="timeline-title">Research & Content Engine</div>
+        <div class="timeline-desc">SMM Research Hub (29 платформ!), Content Factory, Auto-Publisher, AI Blogger (Лиза). Контент-машина заработала.</div>
+        <span class="timeline-tag tag-tool">Automation</span>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <div class="timeline-date">6-12 марта</div>
+        <div class="timeline-title">Взрывной рост</div>
+        <div class="timeline-desc">20+ новых проектов за 7 дней. Marshall, Saudi Hunter, WorldScope, MCPHire, MentalStab, Content Factory. Пик производительности.</div>
+        <span class="timeline-tag tag-product">Peak Output</span>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <div class="timeline-date">12-18 марта</div>
+        <div class="timeline-title">Точка перелома</div>
+        <div class="timeline-desc">10+ активных проектов одновременно. Decision paralysis (LinkedIn 4 открытых вопроса). Ощущение "зарылся". Время для рефлексии и фокуса.</div>
+        <span class="timeline-tag tag-revenue">Inflection</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ANALYTICS -->
+<section id="analytics">
+  <div class="section-header">
+    <h2>Аналитика экосистемы</h2>
+    <p class="subtitle">Как распределялись усилия и ресурсы</p>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3><span class="icon" style="background:rgba(108,92,231,0.1)">📊</span> Распределение по языкам</h3>
+      <canvas id="langChart" height="250"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3><span class="icon" style="background:rgba(0,184,148,0.1)">🔥</span> Активность по неделям</h3>
+      <canvas id="activityChart" height="250"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3><span class="icon" style="background:rgba(253,121,168,0.1)">🎯</span> Типы проектов</h3>
+      <canvas id="projectTypesChart" height="250"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3><span class="icon" style="background:rgba(253,203,110,0.2)">🧪</span> Покрытие тестами</h3>
+      <canvas id="testsChart" height="250"></canvas>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- DIAGNOSIS -->
+<section id="diagnosis">
+  <div class="section-header">
+    <h2>Диагноз: почему "зарылся"</h2>
+    <p class="subtitle">Честный анализ того, что работает и что тормозит</p>
+  </div>
+
+  <div class="quote-block">
+    "Первые 2-3 недели я был в восторге, потому что постоянно прорывался вперёд. Сейчас чувствую, что немного зарылся."
+    <div class="author">— Тим Зинин, 18 марта 2026</div>
+  </div>
+
+  <div class="diagnosis-grid">
+    <div class="diagnosis-card">
+      <h3>🟢 Что работает отлично</h3>
+      <div class="diagnosis-item">
+        <div class="bullet bullet-green"></div>
+        <p><strong>MCP-first подход:</strong> 16 серверов дают тебе суперспособности. MCPHire — лучшее доказательство (13 спринтов → production за 2 недели)</p>
+      </div>
+      <div class="diagnosis-item">
+        <div class="bullet bullet-green"></div>
+        <p><strong>Автоматизация хуками:</strong> 10 Python-хуков = автопилот для безопасности. Ни одного инцидента с секретами за 6 недель</p>
+      </div>
+      <div class="diagnosis-item">
+        <div class="bullet bullet-green"></div>
+        <p><strong>Тестовая дисциплина:</strong> 294 теста по портфолио. Marshall 40/40, MCPHire 54/54, Saudi Hunter 73/73. Это enterprise-уровень</p>
+      </div>
+      <div class="diagnosis-item">
+        <div class="bullet bullet-green"></div>
+        <p><strong>Инфраструктура:</strong> Contabo VPS 30 с 7 cron jobs, Docker fleet из 20 контейнеров, SSL auto-renew. Всё мониторится</p>
+      </div>
+      <div class="diagnosis-item">
+        <div class="bullet bullet-green"></div>
+        <p><strong>Скорость прототипирования:</strong> от идеи до production за 1-3 дня. WorldScope, MCPHire, MentalStab — все запущены молниеносно</p>
+      </div>
+    </div>
+
+    <div class="diagnosis-card">
+      <h3>🔴 Что тормозит</h3>
+      <div class="diagnosis-item">
+        <div class="bullet bullet-red"></div>
+        <p><strong>Расфокус: 10+ активных проектов.</strong> Каждый проект отнимает переключение контекста. Классический "mile wide, inch deep"</p>
+      </div>
+      <div class="diagnosis-item">
+        <div class="bullet bullet-red"></div>
+        <p><strong>Decision paralysis:</strong> LinkedIn Reboot — 4 вопроса висят. Каждый незакрытый вопрос = утечка когнитивной энергии</p>
+      </div>
+      <div class="diagnosis-item">
+        <div class="bullet bullet-red"></div>
+        <p><strong>Строительство > продажи:</strong> 42 репо, но ни один продукт не упакован для продажи. Фичи ≠ Revenue</p>
+      </div>
+      <div class="diagnosis-item">
+        <div class="bullet bullet-red"></div>
+        <p><strong>API-лимиты:</strong> Groq (100K/день), Firecrawl (5K/мес) — бесплатные тиры сдерживают масштабирование</p>
+      </div>
+      <div class="diagnosis-item">
+        <div class="bullet bullet-red"></div>
+        <p><strong>Нет воронки продаж:</strong> Нет лендинга "купить", нет ценников, нет CTA. Весь трафик идёт на проекты, а не на кассу</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 2rem;">
+    <div class="chart-card">
+      <h3><span class="icon" style="background:rgba(253,121,168,0.1)">⚖️</span> Баланс усилий: Building vs. Selling</h3>
+      <canvas id="balanceChart" height="200"></canvas>
+      <p style="margin-top:1rem;font-size:0.85rem;color:var(--text-secondary);text-align:center;">Сейчас: ~95% building / ~5% selling. Цель: 60/40. Каждый час кода без клиента — инвестиция с неизвестным ROI.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- REVENUE STRATEGY -->
+<section id="revenue">
+  <div class="section-header">
+    <h2>Путь к $10K+ MRR</h2>
+    <p class="subtitle">Упаковка существующих активов в продаваемые продукты</p>
+  </div>
+
+  <div class="revenue-path">
+    <div class="revenue-card">
+      <span class="status-badge badge-ready">Актив готов</span>
+      <div class="price" style="color: var(--accent2)">$3,500</div>
+      <div class="price-label">setup + $1,500/мес ретейнер</div>
+      <h3>AI Operations Agent</h3>
+      <p>Multi-agent система под бизнес-процесс клиента. Основа: CrewAI/Agent SDK + твой опыт с Zinin Corp. Research, support, content — любая задача.</p>
+      <div class="progress-bar"><div class="progress-fill" style="width: 80%"></div></div>
+      <div style="font-size:0.75rem;color:var(--text-secondary);margin-top:0.3rem">Готовность актива: 80%</div>
+    </div>
+
+    <div class="revenue-card">
+      <span class="status-badge badge-ready">Актив готов</span>
+      <div class="price" style="color: var(--accent)">$4,000</div>
+      <div class="price-label">setup + $800/мес</div>
+      <h3>Telegram Bot + AI CRM</h3>
+      <p>Бот с AI-классификацией + автоматизация продаж. Уже работает: СБОРКА бот, TG AutoResponder (79% DRAFT accuracy), MentalStab.</p>
+      <div class="progress-bar"><div class="progress-fill" style="width: 90%"></div></div>
+      <div style="font-size:0.75rem;color:var(--text-secondary);margin-top:0.3rem">Готовность актива: 90%</div>
+    </div>
+
+    <div class="revenue-card">
+      <span class="status-badge badge-wip">Нужен лендинг</span>
+      <div class="price" style="color: var(--accent3)">$2,000</div>
+      <div class="price-label">/мес ретейнер</div>
+      <h3>AI Content Engine</h3>
+      <p>Контент-фабрика: генерация + публикация на 16 платформ. Content Factory + Auto-Publisher + SMM Research Hub (29 аудитов).</p>
+      <div class="progress-bar"><div class="progress-fill" style="width: 75%"></div></div>
+      <div style="font-size:0.75rem;color:var(--text-secondary);margin-top:0.3rem">Готовность актива: 75%</div>
+    </div>
+
+    <div class="revenue-card">
+      <span class="status-badge badge-new">Новый продукт</span>
+      <div class="price" style="color: var(--accent5)">$5,000</div>
+      <div class="price-label">setup + $1,500/мес</div>
+      <h3>AI Talent Sourcing</h3>
+      <p>Saudi Hunter переупакованный: автономный поиск кандидатов, 73 теста, scoring, multi-LLM. Для рекрутинговых агентств и HR.</p>
+      <div class="progress-bar"><div class="progress-fill" style="width: 65%"></div></div>
+      <div style="font-size:0.75rem;color:var(--text-secondary);margin-top:0.3rem">Готовность актива: 65%</div>
+    </div>
+
+    <div class="revenue-card">
+      <span class="status-badge badge-new">Уникальная экспертиза</span>
+      <div class="price" style="color: var(--accent4)">$200</div>
+      <div class="price-label">/час консультация</div>
+      <h3>MCP Integration Consulting</h3>
+      <p>Настройка MCP-стека для команд. 16 серверов в production, MCPHire как кейс. Редкая экспертиза на рынке 2026.</p>
+      <div class="progress-bar"><div class="progress-fill" style="width: 95%"></div></div>
+      <div style="font-size:0.75rem;color:var(--text-secondary);margin-top:0.3rem">Готовность: ты уже эксперт</div>
+    </div>
+
+    <div class="revenue-card" style="border: 2px solid var(--accent2); background: rgba(0,184,148,0.02);">
+      <div class="price" style="color: var(--accent2)">$8-12K</div>
+      <div class="price-label">целевой MRR через 3 месяца</div>
+      <h3>Revenue Stack</h3>
+      <p>3 клиента × Agent ($1.5K) + 2 × Bot ($800) + 1 × Content ($2K) + 1-2 setup/мес ($3-5K) = стабильный MRR + проектный доход</p>
+      <div class="progress-bar"><div class="progress-fill" style="width: 15%"></div></div>
+      <div style="font-size:0.75rem;color:var(--text-secondary);margin-top:0.3rem">Текущий прогресс к цели: 15%</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- NEW TOOLS -->
+<section id="tools">
+  <div class="section-header">
+    <h2>Новые инструменты для 10x прорыва</h2>
+    <p class="subtitle">Что добавить в арсенал прямо сейчас</p>
+  </div>
+
+  <div class="tools-grid">
+    <div class="tool-card">
+      <div class="tool-header">
+        <span class="tool-icon">🤖</span>
+        <span class="tool-name">Claude Agent SDK</span>
+        <span class="tool-status status-recommended">MUST HAVE</span>
+      </div>
+      <div class="tool-desc">Agent Teams: lead + 4 специалиста параллельно. Задача на 3 часа → 45 минут. Основа продаваемых мульти-агентных систем.</div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <span class="tool-icon">⚡</span>
+        <span class="tool-name">n8n-MCP</span>
+        <span class="tool-status status-recommended">MUST HAVE</span>
+      </div>
+      <div class="tool-desc">Claude Code строит n8n workflows через API. 1,084 ноды + 2,709 шаблонов. Время доставки клиентам: часы вместо дней.</div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <span class="tool-icon">📚</span>
+        <span class="tool-name">Context7 MCP</span>
+        <span class="tool-status status-active">Установлен</span>
+      </div>
+      <div class="tool-desc">Подтягивает актуальную документацию 50+ фреймворков перед генерацией кода. Убирает hallucination с API.</div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <span class="tool-icon">🎙️</span>
+        <span class="tool-name">Voice Mode / Superwhisper</span>
+        <span class="tool-status status-recommended">HIGH IMPACT</span>
+      </div>
+      <div class="tool-desc">150 слов/мин голосом vs 40-80 клавиатурой. Для длинных промптов и архитектурных задач — 3x ускорение ввода.</div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <span class="tool-icon">👓</span>
+        <span class="tool-name">XREAL Air 2 Ultra</span>
+        <span class="tool-status status-new">Скоро</span>
+      </div>
+      <div class="tool-desc">3 виртуальных экрана: терминал + браузер + мониторинг. Portable multi-monitor для работы вне дома. Sony OLED, 49 PPD.</div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <span class="tool-icon">⌨️</span>
+        <span class="tool-name">HyperKey.spoon</span>
+        <span class="tool-status status-recommended">QUICK WIN</span>
+      </div>
+      <div class="tool-desc">Caps Lock → Hyper Key. 26 горячих клавиш без конфликтов: Hyper+1..0 для 10 проектов. Мгновенное переключение.</div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <span class="tool-icon">🔗</span>
+        <span class="tool-name">n8n (self-hosted)</span>
+        <span class="tool-status status-recommended">REVENUE</span>
+      </div>
+      <div class="tool-desc">Основной delivery layer для клиентских автоматизаций. Claude Code + n8n-MCP = ты строишь, Claude деплоит.</div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <span class="tool-icon">🧠</span>
+        <span class="tool-name">LangGraph</span>
+        <span class="tool-status status-new">Для enterprise</span>
+      </div>
+      <div class="tool-desc">Граф состояний для сложных AI-воркфлоу. LangSmith для отладки. Правильный выбор для клиентских production-систем.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- KEY INSIGHTS -->
+<section id="insights">
+  <div class="section-header">
+    <h2>Ключевые инсайты</h2>
+    <p class="subtitle">То, что не видно из-за ежедневной работы</p>
+  </div>
+
+  <div class="insights-grid">
+    <div class="insight-card critical">
+      <div class="insight-icon">🎯</div>
+      <h3>Builder's Trap</h3>
+      <p>42 репо за 6 недель — это впечатляет как инженерия, но опасно как бизнес. Ни один продукт не имеет страницы "купить". Строить = кайф. Продавать = деньги. Нужен сдвиг к 60/40.</p>
+    </div>
+
+    <div class="insight-card opportunity">
+      <div class="insight-icon">💎</div>
+      <h3>MCP — твоя суперсила</h3>
+      <p>16 MCP серверов в production. MCPHire — MCP-first маркетплейс. MCP передан Linux Foundation. Эта экспертиза через полгода будет стоить $300+/час. Паковать сейчас.</p>
+    </div>
+
+    <div class="insight-card critical">
+      <div class="insight-icon">⚠️</div>
+      <h3>Context Switching Tax</h3>
+      <p>10 проектов × 15 мин на переключение контекста = 2.5 часа/день потерянных. При 8ч рабочем дне это 31% продуктивности. HyperKey + фокус на 3 проекта → +31% output.</p>
+    </div>
+
+    <div class="insight-card tool">
+      <div class="insight-icon">🚀</div>
+      <h3>Agent Teams = 3x скорость</h3>
+      <p>Claude Agent SDK + Agent Teams: 4 специалиста параллельно. Задача на 3 часа за 45 минут. Это и внутренний инструмент, и продаваемый продукт.</p>
+    </div>
+
+    <div class="insight-card opportunity">
+      <div class="insight-icon">💰</div>
+      <h3>Outcome-Based Pricing</h3>
+      <p>Рынок 2026 перешёл на оплату за результат: $0.99/решённый тикет, $X/найденный кандидат. Твоя автоматизация делает маржу 70-80% при таком формате.</p>
+    </div>
+
+    <div class="insight-card tool">
+      <div class="insight-icon">🔮</div>
+      <h3>n8n + Claude = Productized Service</h3>
+      <p>n8n-MCP позволяет Claude Code строить и деплоить workflows за минуты. Для клиента это выглядит как магия. Час твоего времени = $5K продукт. Масштабируемо.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ACTION PLAN -->
+<section id="action">
+  <div class="section-header">
+    <h2>Action Plan: следующие 30 дней</h2>
+    <p class="subtitle">Конкретные шаги к $10K MRR</p>
+  </div>
+
+  <div class="action-plan">
+    <div class="action-step">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <div class="timeframe">Неделя 1 (19-25 марта)</div>
+        <h3>STOP Building, START Selling</h3>
+        <p>Заморозить все проекты кроме 3: Marshall (revenue), СБОРКА (audience), MCPHire (showcase). Остальные — на паузу. Создать лендинг timzinin.com/consulting с 3 пакетами услуг и CTA "Запись на консультацию".</p>
+        <span class="impact">+$0 → структура для дохода</span>
+      </div>
+    </div>
+
+    <div class="action-step">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <div class="timeframe">Неделя 1 (параллельно)</div>
+        <h3>Quick Wins: инструменты</h3>
+        <p>Установить n8n на Contabo + n8n-MCP. Установить HyperKey.spoon. Протестировать Voice Mode в Claude Code. Настроить XREAL при получении. Каждый инструмент — +10-30% скорости.</p>
+        <span class="impact">+30% продуктивности за 2 дня</span>
+      </div>
+    </div>
+
+    <div class="action-step">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <div class="timeframe">Неделя 2 (26 марта - 1 апреля)</div>
+        <h3>LinkedIn Reboot + первые лиды</h3>
+        <p>Закрыть 4 открытых решения. Обновить профиль. Опубликовать 5 постов с кейсами (Marshall, MCPHire, Content Factory). Первые 10 cold outreach на AI consulting.</p>
+        <span class="impact">5-10 тёплых лидов</span>
+      </div>
+    </div>
+
+    <div class="action-step">
+      <div class="step-number">4</div>
+      <div class="step-content">
+        <div class="timeframe">Неделя 3 (2-8 апреля)</div>
+        <h3>Первый пакетный клиент</h3>
+        <p>Конвертировать лиды в discovery-звонки. Предложить "AI Operations Agent" ($3.5K setup + $1.5K/мес) или "Telegram Bot CRM" ($4K + $800/мес). Цель: 1 подписанный клиент.</p>
+        <span class="impact">+$1,500-4,000 MRR</span>
+      </div>
+    </div>
+
+    <div class="action-step">
+      <div class="step-number">5</div>
+      <div class="step-content">
+        <div class="timeframe">Неделя 4 (9-18 апреля)</div>
+        <h3>Agent SDK + масштабирование</h3>
+        <p>Переписать Content Factory на Claude Agent SDK. Задокументировать time savings. Использовать как кейс для второй волны outreach. Нанять второго клиента.</p>
+        <span class="impact">+$3,000-5,000 MRR → итого $5-8K MRR</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- FINAL MESSAGE -->
+<section style="text-align: center; padding: 6rem 2rem;">
+  <div class="quote-block" style="max-width: 700px; margin: 0 auto; border-left-color: var(--accent2);">
+    "Ты построил за 6 недель инфраструктуру, которую команды из 5 человек строят полгода. Проблема не в том, что ты зарылся — проблема в том, что ты строишь быстрее, чем продаёшь. Решение не в новых инструментах (хотя они помогут), а в том, чтобы направить 40% энергии на продажи."
+    <div class="author">— Claude Code, после анализа 42 репозиториев, 16 MCP серверов и 6 недель логов</div>
+  </div>
+</section>
+
+<footer>
+  <div class="sig">Tim Zinin × Claude Code (Opus 4.6) — Productivity Audit</div>
+  <p>18 марта 2026 · 42 репо · 16 MCP · 294 теста · 6 недель</p>
+</footer>
+
+<script>
+// === COUNT UP ANIMATION ===
+function animateCountUp() {
+  document.querySelectorAll('.count-up').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const duration = 2000;
+    const start = performance.now();
+
+    function update(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target);
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  });
+}
+
+// === INTERSECTION OBSERVER ===
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.timeline-item, .insight-card, .action-step').forEach(el => {
+  observer.observe(el);
+});
+
+// === NAV ===
+let lastScroll = 0;
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  const currentScroll = window.scrollY;
+  if (currentScroll > 400) {
+    nav.classList.remove('hidden');
+  } else {
+    nav.classList.add('hidden');
+  }
+  lastScroll = currentScroll;
+});
+
+// === CHARTS ===
+const fontFamily = "'Inter', sans-serif";
+const gridColor = 'rgba(0,0,0,0.06)';
+
+Chart.defaults.font.family = fontFamily;
+Chart.defaults.font.size = 12;
+
+// Language Distribution
+new Chart(document.getElementById('langChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Python', 'HTML', 'TypeScript', 'Shell', 'Other'],
+    datasets: [{
+      data: [12, 13, 3, 1, 13],
+      backgroundColor: ['#6C5CE7', '#00B894', '#0984E3', '#FDCB6E', '#DFE6E9'],
+      borderWidth: 0,
+      borderRadius: 4,
+      spacing: 3
+    }]
+  },
+  options: {
+    responsive: true,
+    cutout: '65%',
+    plugins: {
+      legend: { position: 'right', labels: { padding: 15, usePointStyle: true, pointStyleWidth: 10 } }
+    }
+  }
+});
+
+// Activity by Week
+new Chart(document.getElementById('activityChart'), {
+  type: 'bar',
+  data: {
+    labels: ['5-11 фев', '12-18 фев', '19-25 фев', '26 фев-4 мар', '5-11 мар', '12-18 мар'],
+    datasets: [{
+      label: 'Новые репо',
+      data: [5, 3, 2, 8, 18, 6],
+      backgroundColor: '#6C5CE7',
+      borderRadius: 8,
+      borderSkipped: false
+    }, {
+      label: 'Коммиты',
+      data: [15, 12, 8, 25, 60, 35],
+      backgroundColor: '#00B894',
+      borderRadius: 8,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      x: { grid: { display: false } },
+      y: { grid: { color: gridColor }, beginAtZero: true }
+    },
+    plugins: { legend: { labels: { usePointStyle: true, pointStyleWidth: 10 } } }
+  }
+});
+
+// Project Types
+new Chart(document.getElementById('projectTypesChart'), {
+  type: 'polarArea',
+  data: {
+    labels: ['Боты/AI агенты', 'Веб-сайты', 'Research', 'Инфраструктура', 'Клиентские', 'Контент'],
+    datasets: [{
+      data: [10, 8, 7, 5, 6, 6],
+      backgroundColor: [
+        'rgba(108,92,231,0.7)',
+        'rgba(0,184,148,0.7)',
+        'rgba(9,132,227,0.7)',
+        'rgba(253,203,110,0.7)',
+        'rgba(253,121,168,0.7)',
+        'rgba(162,155,254,0.7)'
+      ],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: { r: { grid: { color: gridColor }, ticks: { display: false } } },
+    plugins: { legend: { position: 'right', labels: { usePointStyle: true, pointStyleWidth: 10, padding: 12 } } }
+  }
+});
+
+// Tests by Project
+new Chart(document.getElementById('testsChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Saudi Hunter', 'MCPHire', 'TG AutoResp', 'Marshall', 'СБОРКА', 'HH Importer'],
+    datasets: [{
+      label: 'Тесты',
+      data: [73, 54, 54, 40, 19, 24],
+      backgroundColor: (ctx) => {
+        const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 300);
+        g.addColorStop(0, '#6C5CE7');
+        g.addColorStop(1, '#00B894');
+        return g;
+      },
+      borderRadius: 8,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    scales: {
+      x: { grid: { color: gridColor }, beginAtZero: true },
+      y: { grid: { display: false } }
+    },
+    plugins: { legend: { display: false } }
+  }
+});
+
+// Balance Chart
+new Chart(document.getElementById('balanceChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Сейчас', 'Цель'],
+    datasets: [{
+      label: 'Building',
+      data: [95, 60],
+      backgroundColor: '#6C5CE7',
+      borderRadius: 8,
+      borderSkipped: false
+    }, {
+      label: 'Selling',
+      data: [5, 40],
+      backgroundColor: '#00B894',
+      borderRadius: 8,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      x: { stacked: true, grid: { display: false } },
+      y: { stacked: true, max: 100, grid: { color: gridColor }, ticks: { callback: v => v + '%' } }
+    },
+    plugins: { legend: { labels: { usePointStyle: true, pointStyleWidth: 10 } } }
+  }
+});
+
+// === START ANIMATIONS ON LOAD ===
+window.addEventListener('load', () => {
+  animateCountUp();
+});
+</script>
+</body>
+</html>
