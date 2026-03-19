@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Каталог 50 инструментов монетизации — Тим Зинин</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root {
+  --bg: #fafaf8;
+  --bg-alt: #f3f2ef;
+  --card: #ffffff;
+  --card-hover: #fdfcfb;
+
+  --text: #1a1918;
+  --text-2: #4a4845;
+  --text-3: #8a8784;
+  --text-inv: #ffffff;
+
+  --violet: #6C5CE7;
+  --violet-light: #a29bfe;
+  --violet-bg: #f0eeff;
+  --green: #00a67e;
+  --green-light: #55efc4;
+  --green-bg: #edfaf6;
+  --amber: #e17055;
+  --amber-light: #fab1a0;
+  --amber-bg: #fff4f1;
+  --blue: #0984E3;
+  --blue-light: #74b9ff;
+  --blue-bg: #edf5ff;
+  --pink: #e84393;
+  --pink-bg: #fff0f7;
+  --teal: #00b894;
+  --teal-bg: #e6faf6;
+  --orange: #fd9644;
+  --orange-bg: #fff6ed;
+  --indigo: #5f27cd;
+  --indigo-bg: #f0ebff;
+
+  --border: #e8e6e2;
+  --border-strong: #d0cdc8;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.05);
+  --shadow: 0 2px 16px rgba(0,0,0,0.07);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
+  --shadow-violet: 0 8px 32px rgba(108,92,231,0.18);
+  --radius-sm: 8px;
+  --radius: 16px;
+  --radius-lg: 24px;
+
+  --grad-hero: linear-gradient(135deg, #6C5CE7 0%, #0984E3 60%, #00a67e 100%);
+  --grad-violet: linear-gradient(135deg, #6C5CE7 0%, #a29bfe 100%);
+  --grad-green: linear-gradient(135deg, #00a67e 0%, #55efc4 100%);
+  --grad-amber: linear-gradient(135deg, #e17055 0%, #fab1a0 100%);
+  --grad-blue: linear-gradient(135deg, #0984E3 0%, #74b9ff 100%);
+  --grad-pink: linear-gradient(135deg, #e84393 0%, #fd79a8 100%);
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(250,250,248,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.nav-brand {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+.nav-brand:hover { color: var(--text); }
+.nav-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 3px var(--green-bg);
+  animation: pulse-dot 2s ease infinite;
+  flex-shrink: 0;
+}
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 3px var(--green-bg); }
+  50% { box-shadow: 0 0 0 6px rgba(0,166,126,0.12); }
+}
+.nav-back {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-3);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+  border: 1px solid var(--border);
+}
+.nav-back:hover {
+  background: var(--bg-alt);
+  color: var(--text-2);
+  border-color: var(--border-strong);
+}
+.nav-badge {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  color: var(--violet);
+  background: var(--violet-bg);
+  padding: 4px 10px;
+  border-radius: 100px;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  padding: 64px 0 48px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -160px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(108,92,231,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  left: -80px;
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, rgba(0,166,126,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  color: var(--violet);
+  background: var(--violet-bg);
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid rgba(108,92,231,0.15);
+  margin-bottom: 20px;
+}
+.hero-title {
+  font-size: clamp(28px, 5vw, 56px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 12px;
+}
+.hero-title .grad {
+  background: var(--grad-hero);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-subtitle {
+  font-size: 17px;
+  color: var(--text-2);
+  max-width: 560px;
+  margin-bottom: 0;
+  font-weight: 400;
+}
+
+/* ============================================================
+   STICKY FILTER BAR
+   ============================================================ */
+.filter-bar-wrap {
+  position: sticky;
+  top: 57px;
+  z-index: 100;
+  background: rgba(250,250,248,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0 12px;
+}
+.filter-section-label {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.filter-row:last-child { margin-bottom: 0; }
+
+.filter-btn {
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-2);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 5px 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  line-height: 1.5;
+}
+.filter-btn:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
+  background: var(--bg-alt);
+}
+.filter-btn.active {
+  background: var(--violet);
+  color: #fff;
+  border-color: var(--violet);
+  box-shadow: 0 2px 8px rgba(108,92,231,0.25);
+}
+
+/* Project filter buttons — colored when active */
+.filter-btn.proj-active-СБОРКА { background: #6C5CE7; color: #fff; border-color: #6C5CE7; }
+.filter-btn.proj-active-Ботаника { background: #00a67e; color: #fff; border-color: #00a67e; }
+.filter-btn.proj-active-Marshall { background: #0984E3; color: #fff; border-color: #0984E3; }
+.filter-btn.proj-active-MCPHire { background: #e17055; color: #fff; border-color: #e17055; }
+.filter-btn.proj-active-MentalStab { background: #e84393; color: #fff; border-color: #e84393; }
+.filter-btn.proj-active-ContentFactory { background: #fd9644; color: #fff; border-color: #fd9644; }
+.filter-btn.proj-active-SaudiHunter { background: #5f27cd; color: #fff; border-color: #5f27cd; }
+.filter-btn.proj-active-Yuki { background: #00b894; color: #fff; border-color: #00b894; }
+.filter-btn.proj-active-КРМКТЛ { background: #636e72; color: #fff; border-color: #636e72; }
+.filter-btn.proj-active-WorldScope { background: #0984E3; color: #fff; border-color: #0984E3; }
+
+/* ============================================================
+   RESULTS BAR
+   ============================================================ */
+.results-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0 16px;
+  gap: 12px;
+}
+.results-count {
+  font-size: 13px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  color: var(--text-3);
+}
+.results-count span {
+  color: var(--violet);
+}
+.leads-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.leads-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-3);
+  font-weight: 500;
+}
+.leads-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.leads-dot.yes { background: var(--green); box-shadow: 0 0 0 2px var(--green-bg); }
+.leads-dot.no { background: #c8c4be; }
+.leads-dot.partial { background: var(--amber); box-shadow: 0 0 0 2px var(--amber-bg); }
+
+/* ============================================================
+   TOOL GRID
+   ============================================================ */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding-bottom: 80px;
+}
+@media (max-width: 960px) {
+  .tools-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .tools-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   TOOL CARD
+   ============================================================ */
+.tool-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.tool-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.tool-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-strong);
+}
+.tool-card:hover::before { opacity: 1; }
+
+/* Category accent lines */
+.tool-card[data-cat="Маркетплейс"]::before { background: var(--grad-violet); }
+.tool-card[data-cat="Agent Marketplace"]::before { background: var(--grad-violet); }
+.tool-card[data-cat="Сообщество"]::before { background: var(--grad-green); }
+.tool-card[data-cat="Newsletter"]::before { background: var(--grad-blue); }
+.tool-card[data-cat="Фриланс"]::before { background: var(--grad-amber); }
+.tool-card[data-cat="Курсы"]::before { background: var(--grad-pink); }
+.tool-card[data-cat="Инструменты"]::before { background: linear-gradient(135deg, #fd9644, #ffeaa7); }
+.tool-card[data-cat="Оплата"]::before { background: linear-gradient(135deg, #00b894, #55efc4); }
+.tool-card[data-cat="CRM"]::before { background: linear-gradient(135deg, #636e72, #b2bec3); }
+.tool-card[data-cat="Соцсети"]::before { background: linear-gradient(135deg, #e84393, #fd79a8); }
+.tool-card[data-cat="Автоматизация"]::before { background: linear-gradient(135deg, #5f27cd, #a29bfe); }
+.tool-card[data-cat="Аналитика"]::before { background: linear-gradient(135deg, #0984E3, #74b9ff); }
+
+/* Hidden state */
+.tool-card.hidden {
+  display: none;
+}
+
+/* ============================================================
+   CARD HEADER
+   ============================================================ */
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.card-name-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.card-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.15s;
+  line-height: 1.3;
+}
+.card-name:hover { color: var(--violet); }
+.card-name-link-icon {
+  font-size: 11px;
+  opacity: 0.4;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+.card-name:hover .card-name-link-icon { opacity: 0.8; }
+.card-category {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 3px 8px;
+  border-radius: 100px;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+/* Category colors */
+.cat-Маркетплейс, .cat-Agent-Marketplace { background: var(--violet-bg); color: var(--violet); }
+.cat-Сообщество { background: var(--green-bg); color: var(--green); }
+.cat-Newsletter { background: var(--blue-bg); color: var(--blue); }
+.cat-Фриланс { background: var(--amber-bg); color: var(--amber); }
+.cat-Курсы { background: var(--pink-bg); color: var(--pink); }
+.cat-Инструменты { background: #fff6ed; color: var(--orange); }
+.cat-Оплата { background: var(--teal-bg); color: var(--teal); }
+.cat-CRM { background: #f1f2f3; color: #4a5568; }
+.cat-Соцсети { background: var(--pink-bg); color: var(--pink); }
+.cat-Автоматизация { background: var(--indigo-bg); color: var(--indigo); }
+.cat-Аналитика { background: var(--blue-bg); color: var(--blue); }
+
+/* Leads indicator */
+.leads-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-3);
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+.leads-indicator .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.leads-indicator.leads-yes .dot {
+  background: var(--green);
+  box-shadow: 0 0 0 2px var(--green-bg);
+}
+.leads-indicator.leads-yes { color: var(--green); }
+.leads-indicator.leads-no .dot { background: #c8c4be; }
+.leads-indicator.leads-partial .dot {
+  background: var(--amber);
+  box-shadow: 0 0 0 2px var(--amber-bg);
+}
+.leads-indicator.leads-partial { color: var(--amber); }
+
+/* ============================================================
+   CARD BODY
+   ============================================================ */
+.card-desc {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+.card-pricing {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.pricing-icon { font-size: 11px; color: var(--text-3); }
+.card-features {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.card-feature {
+  font-size: 12px;
+  color: var(--text-2);
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  line-height: 1.4;
+}
+.card-feature::before {
+  content: '—';
+  color: var(--text-3);
+  flex-shrink: 0;
+  font-size: 10px;
+  margin-top: 1px;
+}
+
+/* ============================================================
+   PROJECT TAGS
+   ============================================================ */
+.card-projects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+.project-tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 100px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+.ptag-СБОРКА { background: rgba(108,92,231,0.07); color: var(--violet); border-color: rgba(108,92,231,0.2); }
+.ptag-Ботаника { background: rgba(0,166,126,0.07); color: var(--green); border-color: rgba(0,166,126,0.2); }
+.ptag-Marshall { background: rgba(9,132,227,0.07); color: var(--blue); border-color: rgba(9,132,227,0.2); }
+.ptag-MCPHire { background: rgba(225,112,85,0.07); color: var(--amber); border-color: rgba(225,112,85,0.2); }
+.ptag-MentalStab { background: rgba(232,67,147,0.07); color: var(--pink); border-color: rgba(232,67,147,0.2); }
+.ptag-ContentFactory { background: rgba(253,150,68,0.08); color: var(--orange); border-color: rgba(253,150,68,0.25); }
+.ptag-SaudiHunter { background: rgba(95,39,205,0.07); color: var(--indigo); border-color: rgba(95,39,205,0.2); }
+.ptag-Yuki { background: rgba(0,184,148,0.07); color: var(--teal); border-color: rgba(0,184,148,0.2); }
+.ptag-КРМКТЛ { background: rgba(99,110,114,0.07); color: #636e72; border-color: rgba(99,110,114,0.2); }
+.ptag-WorldScope { background: rgba(9,132,227,0.07); color: var(--blue); border-color: rgba(9,132,227,0.2); }
+.ptag-все { background: rgba(108,92,231,0.06); color: var(--violet); border-color: rgba(108,92,231,0.15); }
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 80px 24px;
+  color: var(--text-3);
+}
+.empty-state-icon { font-size: 40px; margin-bottom: 12px; }
+.empty-state-title { font-size: 16px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; }
+.empty-state-sub { font-size: 14px; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 0;
+  text-align: center;
+  color: var(--text-3);
+  font-size: 13px;
+}
+.footer a {
+  color: var(--violet);
+  text-decoration: none;
+  font-weight: 500;
+}
+.footer a:hover { text-decoration: underline; }
+
+/* ============================================================
+   SEARCH BOX
+   ============================================================ */
+.search-wrap {
+  position: relative;
+  max-width: 280px;
+}
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-3);
+  font-size: 13px;
+  pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  padding: 7px 12px 7px 30px;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  outline: none;
+  transition: all 0.15s ease;
+}
+.search-input::placeholder { color: var(--text-3); }
+.search-input:focus {
+  border-color: var(--violet-light);
+  box-shadow: 0 0 0 3px rgba(108,92,231,0.1);
+}
+
+/* ============================================================
+   RESPONSIVE TWEAKS
+   ============================================================ */
+@media (max-width: 640px) {
+  .hero { padding: 40px 0 32px; }
+  .leads-legend { display: none; }
+  .search-wrap { max-width: 100%; }
+  .results-bar { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">
+        <span class="nav-dot"></span>
+        Тим Зинин
+      </a>
+      <a href="index.html" class="nav-back">
+        ← Аудит продуктивности
+      </a>
+      <span class="nav-badge mono">50 инструментов</span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">
+      <span>🗂</span>
+      <span>Монетизация · 2026</span>
+    </div>
+    <h1 class="hero-title">
+      Каталог <span class="grad">50 инструментов</span><br>монетизации
+    </h1>
+    <p class="hero-subtitle">
+      Маркетплейсы, рассылки, CRM, агентские платформы, платёжные системы и сообщества — всё для монетизации проектов.
+    </p>
+  </div>
+</section>
+
+<!-- STICKY FILTER BAR -->
+<div class="filter-bar-wrap" id="filterBarWrap">
+  <div class="container">
+    <div class="filter-section-label">Категория</div>
+    <div class="filter-row" id="catFilters">
+      <button class="filter-btn active" data-filter-cat="all">Все</button>
+      <button class="filter-btn" data-filter-cat="Маркетплейс">Маркетплейс</button>
+      <button class="filter-btn" data-filter-cat="Agent Marketplace">Agent Marketplace</button>
+      <button class="filter-btn" data-filter-cat="Сообщество">Сообщество</button>
+      <button class="filter-btn" data-filter-cat="Newsletter">Newsletter</button>
+      <button class="filter-btn" data-filter-cat="Фриланс">Фриланс</button>
+      <button class="filter-btn" data-filter-cat="Курсы">Курсы</button>
+      <button class="filter-btn" data-filter-cat="Инструменты">Инструменты</button>
+      <button class="filter-btn" data-filter-cat="Оплата">Оплата</button>
+      <button class="filter-btn" data-filter-cat="CRM">CRM</button>
+      <button class="filter-btn" data-filter-cat="Соцсети">Соцсети</button>
+      <button class="filter-btn" data-filter-cat="Автоматизация">Автоматизация</button>
+    </div>
+    <div class="filter-section-label">Проект</div>
+    <div class="filter-row" id="projFilters">
+      <button class="filter-btn active-proj" data-filter-proj="all">Все проекты</button>
+      <button class="filter-btn" data-filter-proj="СБОРКА">СБОРКА</button>
+      <button class="filter-btn" data-filter-proj="Ботаника">Ботаника</button>
+      <button class="filter-btn" data-filter-proj="Marshall">Marshall</button>
+      <button class="filter-btn" data-filter-proj="MCPHire">MCPHire</button>
+      <button class="filter-btn" data-filter-proj="MentalStab">MentalStab</button>
+      <button class="filter-btn" data-filter-proj="Content Factory">Content Factory</button>
+      <button class="filter-btn" data-filter-proj="Saudi Hunter">Saudi Hunter</button>
+      <button class="filter-btn" data-filter-proj="Yuki">Yuki</button>
+      <button class="filter-btn" data-filter-proj="КРМКТЛ">КРМКТЛ</button>
+      <button class="filter-btn" data-filter-proj="WorldScope">WorldScope</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS BAR -->
+<div class="container">
+  <div class="results-bar">
+    <div class="results-count mono">
+      Показано <span id="visibleCount">50</span> из 50
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <div class="leads-legend">
+        <div class="leads-legend-item"><div class="leads-dot yes"></div> Генерирует лиды</div>
+        <div class="leads-legend-item"><div class="leads-dot partial"></div> Частично</div>
+        <div class="leads-legend-item"><div class="leads-dot no"></div> Без лидов</div>
+      </div>
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input type="text" class="search-input" id="searchInput" placeholder="Поиск по названию...">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOOLS GRID -->
+<div class="container">
+  <div class="tools-grid" id="toolsGrid">
+    <!-- Cards injected by JS -->
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <div class="empty-state-icon">🔍</div>
+      <div class="empty-state-title">Инструменты не найдены</div>
+      <div class="empty-state-sub">Попробуйте изменить фильтры или поисковый запрос</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    Каталог инструментов монетизации · <a href="index.html">Тим Зинин</a> · 2026
+  </div>
+</footer>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const TOOLS = [
+  {
+    id: 1,
+    name: "PayGated.dev",
+    url: "https://paygated.dev",
+    desc: "Монетизация MCP через pay-gate обёртку",
+    cat: "Agent Marketplace",
+    leads: "yes",
+    pricing: "$0 self-hosted",
+    projects: ["СБОРКА", "MCPHire", "Ботаника"],
+    features: ["Shadow mode", "per-tool pricing", "MIT license"]
+  },
+  {
+    id: 2,
+    name: "MCPize",
+    url: "https://mcpize.com",
+    desc: "Маркетплейс MCP серверов, 85% revenue share",
+    cat: "Agent Marketplace",
+    leads: "yes",
+    pricing: "$0 + 15% комиссия",
+    projects: ["MCPHire", "Saudi Hunter", "Content Factory"],
+    features: ["One-command deploy", "350+ серверов", "Stripe billing"]
+  },
+  {
+    id: 3,
+    name: "CommuniPass",
+    url: "https://communipass.com",
+    desc: "AI-агент внутри Telegram/WhatsApp/Discord community",
+    cat: "Сообщество",
+    leads: "no",
+    pricing: "$199/мес",
+    projects: ["Ботаника", "СБОРКА", "MentalStab", "КРМКТЛ"],
+    features: ["AI FAQ бот", "auto onboarding", "upsell automation"]
+  },
+  {
+    id: 4,
+    name: "Whop",
+    url: "https://whop.com",
+    desc: "Продажа цифровых продуктов с Discover маркетплейсом",
+    cat: "Маркетплейс",
+    leads: "yes",
+    pricing: "3% комиссия",
+    projects: ["Ботаника", "СБОРКА", "Marshall"],
+    features: ["Discover marketplace", "30K аффилиатов", "Telegram интеграция"]
+  },
+  {
+    id: 5,
+    name: "MuleRun",
+    url: "https://mulerun.com",
+    desc: "AI-агент маркетплейс с 600K пользователями",
+    cat: "Agent Marketplace",
+    leads: "yes",
+    pricing: "~0% для Genesis",
+    projects: ["Ботаника", "СБОРКА", "MCPHire", "Marshall"],
+    features: ["600K users", "Creator Studio", "iPhone Siri интеграция"]
+  },
+  {
+    id: 6,
+    name: "Substack",
+    url: "https://substack.com",
+    desc: "Рассылка с органическим discovery через Notes и рекомендации",
+    cat: "Newsletter",
+    leads: "yes",
+    pricing: "10% + Stripe",
+    projects: ["Ботаника", "СБОРКА", "Marshall", "Yuki"],
+    features: ["32M новых подписчиков из экосистемы", "Notes", "Recommendations"]
+  },
+  {
+    id: 7,
+    name: "Skool",
+    url: "https://skool.com",
+    desc: "Платное сообщество с Discovery маркетплейсом",
+    cat: "Сообщество",
+    leads: "yes",
+    pricing: "$9/мес + 10%",
+    projects: ["Ботаника", "СБОРКА", "Marshall"],
+    features: ["Community Finder", "Skool Games", "курсы + чат"]
+  },
+  {
+    id: 8,
+    name: "Contra",
+    url: "https://contra.com",
+    desc: "Фриланс-платформа с 0% комиссией для исполнителя",
+    cat: "Фриланс",
+    leads: "yes",
+    pricing: "0%",
+    projects: ["Marshall", "Ботаника", "КРМКТЛ"],
+    features: ["0% комиссия", "Indy AI матчинг", "1M+ специалистов"]
+  },
+  {
+    id: 9,
+    name: "Telegram Stars",
+    url: "https://telegram.org/blog/stars",
+    desc: "Нативные платежи внутри Telegram через Stars",
+    cat: "Оплата",
+    leads: "yes",
+    pricing: "0% от TG",
+    projects: ["СБОРКА", "Ботаника", "MentalStab", "MCPHire"],
+    features: ["400M bot users", "Apple/Google Pay", "0% комиссия"]
+  },
+  {
+    id: 10,
+    name: "DevHunt",
+    url: "https://devhunt.org",
+    desc: "Product Hunt для dev tools, DR57 backlink",
+    cat: "Инструменты",
+    leads: "yes",
+    pricing: "Бесплатно",
+    projects: ["MCPHire", "Saudi Hunter", "Ботаника", "WorldScope"],
+    features: ["50K engineers", "SEO backlink", "newsletter 50K"]
+  },
+  {
+    id: 11,
+    name: "Polar.sh",
+    url: "https://polar.sh",
+    desc: "Open source monetization, GitHub funding partner",
+    cat: "Оплата",
+    leads: "partial",
+    pricing: "4% + $0.40",
+    projects: ["MCPHire", "Ботаника", "Saudi Hunter"],
+    features: ["License keys", "subscriptions", "GitHub FUNDING.yml"]
+  },
+  {
+    id: 12,
+    name: "beehiiv",
+    url: "https://beehiiv.com",
+    desc: "Рассылка с Boosts Network и 0% комиссией",
+    cat: "Newsletter",
+    leads: "yes",
+    pricing: "Бесплатно до 2500",
+    projects: ["Ботаника", "СБОРКА", "Marshall", "Yuki"],
+    features: ["Boosts Network", "Ad Network", "0% на подписки"]
+  },
+  {
+    id: 13,
+    name: "MindStudio",
+    url: "https://mindstudio.ai",
+    desc: "No-code AI agent builder с marketplace",
+    cat: "Agent Marketplace",
+    leads: "partial",
+    pricing: "Бесплатно / $25/мес",
+    projects: ["СБОРКА", "MentalStab", "Yuki", "Marshall"],
+    features: ["150K агентов", "0% комиссия", "200+ моделей"]
+  },
+  {
+    id: 14,
+    name: "Lemon Squeezy",
+    url: "https://lemonsqueezy.com",
+    desc: "Merchant of Record для SaaS (Stripe-owned)",
+    cat: "Оплата",
+    leads: "no",
+    pricing: "5% + $0.50",
+    projects: ["MCPHire", "Ботаника", "Marshall"],
+    features: ["Авто-налоги", "license keys", "affiliate programs"]
+  },
+  {
+    id: 15,
+    name: "Gumroad",
+    url: "https://gumroad.com",
+    desc: "Продажа цифровых продуктов с Discover",
+    cat: "Маркетплейс",
+    leads: "yes",
+    pricing: "10%",
+    projects: ["Ботаника", "СБОРКА", "Marshall", "Content Factory"],
+    features: ["Мгновенная доставка", "pay-what-you-want", "промокоды"]
+  },
+  {
+    id: 16,
+    name: "Payhip",
+    url: "https://payhip.com",
+    desc: "Курсы, загрузки, коучинг с партнёрской программой",
+    cat: "Маркетплейс",
+    leads: "no",
+    pricing: "Бесплатно (5%)",
+    projects: ["СБОРКА", "Ботаника", "Marshall", "MentalStab"],
+    features: ["Встроенные курсы", "affiliate", "НДС"]
+  },
+  {
+    id: 17,
+    name: "Ko-fi",
+    url: "https://ko-fi.com",
+    desc: "Донаты, подписки и цифровые продукты с 0% комиссией",
+    cat: "Оплата",
+    leads: "yes",
+    pricing: "Бесплатно",
+    projects: ["Ботаника", "СБОРКА", "Yuki", "MentalStab"],
+    features: ["0% комиссия", "магазин продуктов", "подписки"]
+  },
+  {
+    id: 18,
+    name: "Paddle",
+    url: "https://paddle.com",
+    desc: "Merchant of Record для SaaS с 200+ странами",
+    cat: "Оплата",
+    leads: "no",
+    pricing: "5% + $0.50",
+    projects: ["MCPHire", "Saudi Hunter", "Content Factory"],
+    features: ["Авто-налоги", "30+ валют", "API"]
+  },
+  {
+    id: 19,
+    name: "Stripe Billing",
+    url: "https://stripe.com/billing",
+    desc: "Промышленный стандарт биллинга для разработчиков",
+    cat: "Оплата",
+    leads: "no",
+    pricing: "2.9% + $0.30",
+    projects: ["MCPHire", "Saudi Hunter", "WorldScope"],
+    features: ["Подписки", "usage-based", "metered billing"]
+  },
+  {
+    id: 20,
+    name: "Dodo Payments",
+    url: "https://dodopayments.com",
+    desc: "Новый MoR с минимальными комиссиями",
+    cat: "Оплата",
+    leads: "no",
+    pricing: "2.9% + $0.30",
+    projects: ["MCPHire", "Saudi Hunter"],
+    features: ["Быстрый онбординг", "150+ стран", "нет скрытых сборов"]
+  },
+  {
+    id: 21,
+    name: "Ghost",
+    url: "https://ghost.org",
+    desc: "Open-source платформа с 0% комиссией на подписки",
+    cat: "Newsletter",
+    leads: "yes",
+    pricing: "$9/мес",
+    projects: ["Marshall", "Ботаника", "СБОРКА", "Yuki"],
+    features: ["0% комиссии", "API", "self-hosted опция"]
+  },
+  {
+    id: 22,
+    name: "Buttondown",
+    url: "https://buttondown.email",
+    desc: "API-first рассылка для разработчиков",
+    cat: "Newsletter",
+    leads: "yes",
+    pricing: "Бесплатно до 100",
+    projects: ["Ботаника", "Marshall", "СБОРКА"],
+    features: ["Markdown", "REST API", "SEO архивы"]
+  },
+  {
+    id: 23,
+    name: "Kit (ConvertKit)",
+    url: "https://kit.com",
+    desc: "Email-маркетинг с Creator Network",
+    cat: "Newsletter",
+    leads: "yes",
+    pricing: "Бесплатно до 10K",
+    projects: ["СБОРКА", "Marshall", "MentalStab", "Yuki"],
+    features: ["Creator Network", "визуальные автоматизации", "продажа продуктов"]
+  },
+  {
+    id: 24,
+    name: "Maven",
+    url: "https://maven.com",
+    desc: "Маркетплейс cohort-based курсов с 90% инструктору",
+    cat: "Курсы",
+    leads: "yes",
+    pricing: "10% комиссия",
+    projects: ["Ботаника", "СБОРКА", "Marshall"],
+    features: ["Маркетплейс", "живые сессии", "cohort-кампании"]
+  },
+  {
+    id: 25,
+    name: "Podia",
+    url: "https://podia.com",
+    desc: "Курсы, вебинары, загрузки без транзакционных комиссий",
+    cat: "Курсы",
+    leads: "yes",
+    pricing: "$39/мес",
+    projects: ["СБОРКА", "MentalStab", "Yuki", "Marshall"],
+    features: ["Безлимитные курсы", "email", "вебинары"]
+  },
+  {
+    id: 26,
+    name: "Teachable",
+    url: "https://teachable.com",
+    desc: "Онлайн-курсы с сертификатами и аналитикой",
+    cat: "Курсы",
+    leads: "yes",
+    pricing: "Бесплатно (10%+$1)",
+    projects: ["СБОРКА", "Ботаника", "MentalStab"],
+    features: ["Сертификаты", "квизы", "кастомный CSS"]
+  },
+  {
+    id: 27,
+    name: "Circle",
+    url: "https://circle.so",
+    desc: "Монетизируемые сообщества с курсами и live-стримами",
+    cat: "Сообщество",
+    leads: "yes",
+    pricing: "$89/мес",
+    projects: ["Ботаника", "СБОРКА", "Marshall"],
+    features: ["Пространства", "Email Hub", "автоматизации"]
+  },
+  {
+    id: 28,
+    name: "Mighty Networks",
+    url: "https://mightynetworks.com",
+    desc: "Брендированные сообщества с AI-рекомендациями",
+    cat: "Сообщество",
+    leads: "yes",
+    pricing: "$49/мес",
+    projects: ["Ботаника", "СБОРКА", "MentalStab"],
+    features: ["135 валют", "AI-рекомендации", "безлимит участников"]
+  },
+  {
+    id: 29,
+    name: "Indie Hackers",
+    url: "https://indiehackers.com",
+    desc: "Сообщество основателей с публичными метриками",
+    cat: "Сообщество",
+    leads: "yes",
+    pricing: "Бесплатно",
+    projects: ["MCPHire", "Saudi Hunter", "Ботаника", "Marshall"],
+    features: ["Публичные метрики", "кейсы", "нетворкинг"]
+  },
+  {
+    id: 30,
+    name: "Peerlist",
+    url: "https://peerlist.io",
+    desc: "Профессиональная сеть для IT с верификацией через GitHub",
+    cat: "Соцсети",
+    leads: "yes",
+    pricing: "Бесплатно",
+    projects: ["Marshall", "MCPHire", "Ботаника"],
+    features: ["GitHub верификация", "27K+ специалистов", "портфолио"]
+  },
+  {
+    id: 31,
+    name: "Wellfound",
+    url: "https://wellfound.com",
+    desc: "Бывший AngelList — вакансии стартапов и фриланс",
+    cat: "Фриланс",
+    leads: "yes",
+    pricing: "Бесплатно",
+    projects: ["Marshall", "MCPHire", "Saudi Hunter"],
+    features: ["Прозрачные зарплаты", "equity", "прямой контакт"]
+  },
+  {
+    id: 32,
+    name: "Toptal",
+    url: "https://toptal.com",
+    desc: "Элитная сеть топ-3% фрилансеров",
+    cat: "Фриланс",
+    leads: "yes",
+    pricing: "Бесплатно",
+    projects: ["Marshall", "КРМКТЛ"],
+    features: ["Топ-3% скрининг", "Fortune 500 клиенты", "$150+/ч"]
+  },
+  {
+    id: 33,
+    name: "Upwork",
+    url: "https://upwork.com",
+    desc: "Крупнейшая фриланс-платформа, 1000%+ рост AI-вакансий",
+    cat: "Фриланс",
+    leads: "yes",
+    pricing: "10%",
+    projects: ["Marshall", "КРМКТЛ", "Saudi Hunter"],
+    features: ["1000% рост AI вакансий", "Top Rated бейджи", "защита платежей"]
+  },
+  {
+    id: 34,
+    name: "AI Agent Store",
+    url: "https://aiagentstore.ai",
+    desc: "Каталог и маркетплейс AI-агентов",
+    cat: "Agent Marketplace",
+    leads: "yes",
+    pricing: "Бесплатно",
+    projects: ["Saudi Hunter", "Content Factory", "MCPHire"],
+    features: ["1300+ агентов", "категоризация", "профили агентов"]
+  },
+  {
+    id: 35,
+    name: "AI Agents Directory",
+    url: "https://aiagentsdirectory.com",
+    desc: "Структурированный каталог AI-агентов с отзывами",
+    cat: "Agent Marketplace",
+    leads: "yes",
+    pricing: "Бесплатно",
+    projects: ["Saudi Hunter", "Content Factory", "MCPHire"],
+    features: ["Отзывы", "рейтинги", "SEO-трафик"]
+  },
+  {
+    id: 36,
+    name: "MintMCP",
+    url: "https://mintmcp.com",
+    desc: "Монетизация MCP-серверов с usage-based billing",
+    cat: "Agent Marketplace",
+    leads: "yes",
+    pricing: "% с транзакций",
+    projects: ["Ботаника", "MCPHire", "Saudi Hunter"],
+    features: ["Usage-based", "MCP специализация", "LLM интеграция"]
+  },
+  {
+    id: 37,
+    name: "Product Hunt",
+    url: "https://producthunt.com",
+    desc: "Главная платформа для запуска продуктов (6M+ пользователей)",
+    cat: "Инструменты",
+    leads: "yes",
+    pricing: "Бесплатно",
+    projects: ["MCPHire", "Ботаника", "Saudi Hunter", "WorldScope"],
+    features: ["6M+ users", "newsletter", "SEO-ссылки"]
+  },
+  {
+    id: 38,
+    name: "Hashnode",
+    url: "https://hashnode.com",
+    desc: "Блог-платформа для разработчиков с Sponsors",
+    cat: "Инструменты",
+    leads: "yes",
+    pricing: "Бесплатно",
+    projects: ["Ботаника", "Marshall", "MCPHire"],
+    features: ["Sponsors", "SEO", "developer синдикация"]
+  },
+  {
+    id: 39,
+    name: "Dub.co",
+    url: "https://dub.co",
+    desc: "Атрибуция ссылок и партнёрские программы",
+    cat: "Аналитика",
+    leads: "no",
+    pricing: "Бесплатно до 1000",
+    projects: ["СБОРКА", "Ботаника", "MCPHire", "Yuki"],
+    features: ["Брендированные ссылки", "Partners", "аналитика"]
+  },
+  {
+    id: 40,
+    name: "Cal.com",
+    url: "https://cal.com",
+    desc: "Open-source планировщик с оплатой через Stripe",
+    cat: "Инструменты",
+    leads: "yes",
+    pricing: "Бесплатно",
+    projects: ["Marshall", "MentalStab", "СБОРКА", "КРМКТЛ"],
+    features: ["Оплата через Stripe", "self-hosted", "round-robin"]
+  },
+  {
+    id: 41,
+    name: "Breakcold",
+    url: "https://breakcold.com",
+    desc: "AI-нативная CRM с Telegram интеграцией",
+    cat: "CRM",
+    leads: "yes",
+    pricing: "$29/мес",
+    projects: ["Marshall", "КРМКТЛ", "MCPHire"],
+    features: ["AI обогащение", "Telegram inbox", "мониторинг соцсетей"]
+  },
+  {
+    id: 42,
+    name: "HoneyBook",
+    url: "https://honeybook.com",
+    desc: "Управление клиентским потоком: лид → контракт → оплата",
+    cat: "CRM",
+    leads: "yes",
+    pricing: "$19/мес",
+    projects: ["Marshall", "MentalStab", "Yuki", "КРМКТЛ"],
+    features: ["Единый флоу", "автоматизация follow-up", "шаблоны"]
+  },
+  {
+    id: 43,
+    name: "Bonsai",
+    url: "https://hellobonsai.com",
+    desc: "Бизнес-суит для фрилансеров: CRM + инвойсы + налоги",
+    cat: "CRM",
+    leads: "no",
+    pricing: "$25/мес",
+    projects: ["Marshall", "MentalStab", "Yuki"],
+    features: ["Тайм-трекинг", "e-подпись контрактов", "налоги"]
+  },
+  {
+    id: 44,
+    name: "Tally",
+    url: "https://tally.so",
+    desc: "Бесплатный конструктор форм со Stripe оплатой",
+    cat: "Инструменты",
+    leads: "yes",
+    pricing: "Бесплатно",
+    projects: ["СБОРКА", "MentalStab", "MCPHire", "Marshall"],
+    features: ["Безлимитные формы", "Stripe", "условная логика"]
+  },
+  {
+    id: 45,
+    name: "Crisp",
+    url: "https://crisp.chat",
+    desc: "AI-powered чат и поддержка с мультиканальным inbox",
+    cat: "CRM",
+    leads: "yes",
+    pricing: "Бесплатно (2 оператора)",
+    projects: ["СБОРКА", "MentalStab", "MCPHire", "Marshall"],
+    features: ["AI решает 35% запросов", "WhatsApp", "проактивные триггеры"]
+  },
+  {
+    id: 46,
+    name: "Fourthwall",
+    url: "https://fourthwall.com",
+    desc: "Мерч и цифровые продукты для creators с YouTube/Twitch",
+    cat: "Соцсети",
+    leads: "no",
+    pricing: "0-5%",
+    projects: ["Ботаника", "СБОРКА", "Yuki"],
+    features: ["Print-on-demand", "YouTube интеграция", "членства"]
+  },
+  {
+    id: 47,
+    name: "Patreon",
+    url: "https://patreon.com",
+    desc: "Тирные подписки для лояльной аудитории",
+    cat: "Соцсети",
+    leads: "no",
+    pricing: "8-12%",
+    projects: ["Ботаника", "СБОРКА", "MentalStab"],
+    features: ["Тиры", "эксклюзивный контент", "предсказуемый доход"]
+  },
+  {
+    id: 48,
+    name: "Kajabi",
+    url: "https://kajabi.com",
+    desc: "Всё-в-одном для creators: курсы, коучинг, подкаст, email",
+    cat: "Курсы",
+    leads: "yes",
+    pricing: "$179/мес",
+    projects: ["СБОРКА", "MentalStab", "Marshall"],
+    features: ["Полная воронка", "Live Rooms", "подкаст-хостинг"]
+  },
+  {
+    id: 49,
+    name: "BotPool",
+    url: "https://botpool.ai",
+    desc: "AI-маркетплейс для найма AI-разработчиков",
+    cat: "Agent Marketplace",
+    leads: "yes",
+    pricing: "Бесплатно",
+    projects: ["Marshall", "КРМКТЛ", "MCPHire"],
+    features: ["AI-матчинг", "верификация навыков", "LLM специализация"]
+  },
+  {
+    id: 50,
+    name: "n8n",
+    url: "https://n8n.io",
+    desc: "Self-hosted автоматизатор workflows с 70+ AI нодами",
+    cat: "Автоматизация",
+    leads: "no",
+    pricing: "Бесплатно (self-hosted)",
+    projects: ["СБОРКА", "Ботаника", "Marshall", "MCPHire", "MentalStab", "Content Factory", "Saudi Hunter", "Yuki", "КРМКТЛ", "WorldScope"],
+    features: ["1084 ноды", "MCP Client", "AI Agent node"]
+  }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let activeCat = "all";
+let activeProj = "all";
+let searchQuery = "";
+
+// ============================================================
+// RENDER
+// ============================================================
+function getCatClass(cat) {
+  return "cat-" + cat.replace(/\s+/g, "-");
+}
+
+function getProjectTagClass(proj) {
+  const map = {
+    "СБОРКА": "ptag-СБОРКА",
+    "Ботаника": "ptag-Ботаника",
+    "Marshall": "ptag-Marshall",
+    "MCPHire": "ptag-MCPHire",
+    "MentalStab": "ptag-MentalStab",
+    "Content Factory": "ptag-ContentFactory",
+    "Saudi Hunter": "ptag-SaudiHunter",
+    "Yuki": "ptag-Yuki",
+    "КРМКТЛ": "ptag-КРМКТЛ",
+    "WorldScope": "ptag-WorldScope"
+  };
+  return map[proj] || "ptag-СБОРКА";
+}
+
+function renderLeadsLabel(leads) {
+  if (leads === "yes") return "Лиды";
+  if (leads === "partial") return "Частично";
+  return "Без лидов";
+}
+
+function buildCard(tool) {
+  const leadsClass = `leads-${tool.leads}`;
+  const catClass = getCatClass(tool.cat);
+
+  const projectTags = tool.projects.map(p => {
+    const n50 = tool.projects.length > 5 && p === tool.projects[tool.projects.length - 1];
+    return `<span class="project-tag ${getProjectTagClass(p)}">${p}</span>`;
+  }).join("");
+
+  const features = tool.features.map(f =>
+    `<div class="card-feature">${f}</div>`
+  ).join("");
+
+  return `
+<div class="tool-card" data-cat="${tool.cat}" data-projects="${tool.projects.join(",")}" data-name="${tool.name.toLowerCase()}" data-id="${tool.id}">
+  <div class="card-header">
+    <div class="card-name-wrap">
+      <a class="card-name" href="${tool.url}" target="_blank" rel="noopener noreferrer">
+        ${tool.name}
+        <span class="card-name-link-icon">↗</span>
+      </a>
+      <span class="card-category ${catClass}">${tool.cat}</span>
+    </div>
+    <div class="leads-indicator ${leadsClass}">
+      <span class="dot"></span>
+      ${renderLeadsLabel(tool.leads)}
+    </div>
+  </div>
+  <div class="card-desc">${tool.desc}</div>
+  <div class="card-pricing">
+    <span class="pricing-icon">₽</span>
+    <span>${tool.pricing}</span>
+  </div>
+  <div class="card-features">${features}</div>
+  <div class="card-projects">${projectTags}</div>
+</div>`;
+}
+
+function renderAll() {
+  const grid = document.getElementById("toolsGrid");
+  const emptyState = document.getElementById("emptyState");
+
+  // Remove existing cards (keep emptyState)
+  const existingCards = grid.querySelectorAll(".tool-card");
+  existingCards.forEach(c => c.remove());
+
+  let visible = 0;
+
+  TOOLS.forEach(tool => {
+    const catMatch = activeCat === "all" || tool.cat === activeCat;
+    const projMatch = activeProj === "all" || tool.projects.includes(activeProj);
+    const searchMatch = searchQuery === "" || tool.name.toLowerCase().includes(searchQuery);
+
+    if (catMatch && projMatch && searchMatch) {
+      visible++;
+      const div = document.createElement("div");
+      div.innerHTML = buildCard(tool).trim();
+      const card = div.firstChild;
+      grid.insertBefore(card, emptyState);
+    }
+  });
+
+  document.getElementById("visibleCount").textContent = visible;
+
+  if (visible === 0) {
+    emptyState.style.display = "block";
+  } else {
+    emptyState.style.display = "none";
+  }
+}
+
+// ============================================================
+// FILTERS — CATEGORY
+// ============================================================
+document.getElementById("catFilters").addEventListener("click", function(e) {
+  const btn = e.target.closest(".filter-btn");
+  if (!btn) return;
+  const val = btn.dataset.filterCat;
+  if (!val) return;
+
+  activeCat = val;
+
+  this.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+
+  renderAll();
+});
+
+// ============================================================
+// FILTERS — PROJECT
+// ============================================================
+document.getElementById("projFilters").addEventListener("click", function(e) {
+  const btn = e.target.closest(".filter-btn");
+  if (!btn) return;
+  const val = btn.dataset.filterProj;
+  if (!val) return;
+
+  activeProj = val;
+
+  this.querySelectorAll(".filter-btn").forEach(b => {
+    b.classList.remove("active");
+    // Remove all proj-active-* classes
+    b.className = b.className.replace(/proj-active-\S+/g, "").trim();
+  });
+
+  btn.classList.add("active");
+  if (val !== "all") {
+    const safeKey = val.replace(/\s+/g, "");
+    btn.classList.add("proj-active-" + safeKey);
+  }
+
+  renderAll();
+});
+
+// ============================================================
+// SEARCH
+// ============================================================
+document.getElementById("searchInput").addEventListener("input", function() {
+  searchQuery = this.value.toLowerCase().trim();
+  renderAll();
+});
+
+// ============================================================
+// INIT
+// ============================================================
+renderAll();
+</script>
+</body>
+</html>
