@@ -1302,7 +1302,7 @@ section + section {
         <li><a href="#actions">Действия</a></li>
       </ul>
       <!-- data-week-number placeholder -->
-      <span class="nav-badge mono" data-placeholder="week-badge">Неделя 6</span>
+      <span class="nav-badge mono" data-placeholder="week-badge">Неделя 9</span>
     </div>
   </div>
 </nav>
@@ -1317,11 +1317,11 @@ section + section {
       <!-- data-week-number, data-date-range placeholders -->
       <div class="hero-eyebrow mono">
         <span>⚡</span>
-        <span data-placeholder="date-range">12–18 марта 2026</span>
+        <span data-placeholder="date-range">2–8 апреля 2026</span>
       </div>
 
       <h1 class="hero-title">
-        <span class="week-label" data-placeholder="week-label">Неделя 6</span><br>
+        <span class="week-label" data-placeholder="week-label">Неделя 9</span><br>
         Аудит продуктивности
       </h1>
 
@@ -1337,35 +1337,35 @@ section + section {
       <!-- data-active-projects -->
       <div class="metric-card violet reveal reveal-delay-1">
         <span class="metric-icon">🏗</span>
-        <div class="metric-value" data-placeholder="active-projects">7</div>
+        <div class="metric-value" data-placeholder="active-projects">16</div>
         <div class="metric-label">Активных проектов</div>
       </div>
 
       <!-- data-commits-week -->
       <div class="metric-card blue reveal reveal-delay-2">
         <span class="metric-icon">💾</span>
-        <div class="metric-value" data-placeholder="commits-week">47</div>
+        <div class="metric-value" data-placeholder="commits-week">259</div>
         <div class="metric-label">Коммитов за неделю</div>
       </div>
 
       <!-- data-mrr -->
       <div class="metric-card green reveal reveal-delay-3">
         <span class="metric-icon">💰</span>
-        <div class="metric-value" data-placeholder="mrr">$1.8K</div>
+        <div class="metric-value" data-placeholder="mrr">$2.1K</div>
         <div class="metric-label">Текущий MRR</div>
       </div>
 
       <!-- data-new-students -->
       <div class="metric-card amber reveal reveal-delay-4">
         <span class="metric-icon">🎓</span>
-        <div class="metric-value" data-placeholder="new-students">3</div>
+        <div class="metric-value" data-placeholder="new-students">—</div>
         <div class="metric-label">Новых студентов</div>
       </div>
 
       <!-- data-tools-prod -->
       <div class="metric-card pink reveal reveal-delay-5">
         <span class="metric-icon">🛠</span>
-        <div class="metric-value" data-placeholder="tools-prod">12</div>
+        <div class="metric-value" data-placeholder="tools-prod">13</div>
         <div class="metric-label">Инструменты in Prod</div>
       </div>
 
@@ -1454,7 +1454,7 @@ section + section {
         <div class="mrr-display">
           <span class="mrr-currency">$</span>
           <!-- data-mrr placeholder -->
-          <span class="mrr-value" data-placeholder="mrr-number">1,850</span>
+          <span class="mrr-value" data-placeholder="mrr-number">2,100</span>
         </div>
         <div class="mrr-label">Ежемесячный регулярный доход</div>
 
@@ -1463,7 +1463,7 @@ section + section {
           <div class="progress-header">
             <span class="progress-label">Путь к $10K MRR</span>
             <!-- data-mrr-pct placeholder: (mrr / 10000 * 100).toFixed(1) -->
-            <span class="progress-pct" data-placeholder="mrr-pct">18.5%</span>
+            <span class="progress-pct" data-placeholder="mrr-pct">21%</span>
           </div>
           <div class="progress-bar-bg">
             <!-- data-width set by JS from mrr-pct -->
@@ -1536,7 +1536,7 @@ section + section {
           <canvas id="chartДоходMix"></canvas>
           <div class="doughnut-center">
             <!-- data-mrr-short placeholder -->
-            <div class="doughnut-center-value" data-placeholder="mrr-short">$1.8K</div>
+            <div class="doughnut-center-value" data-placeholder="mrr-short">$2.1K</div>
             <div class="doughnut-center-label">MRR</div>
           </div>
         </div>
@@ -1983,9 +1983,9 @@ section + section {
     <div class="footer-text mono">
       Сгенерировано <strong>/weekly-audit</strong> skill
       &nbsp;·&nbsp;
-      <strong data-placeholder="footer-week">Неделя 6</strong>
+      <strong data-placeholder="footer-week">Неделя 9</strong>
       &nbsp;·&nbsp;
-      <span data-placeholder="footer-date">18 марта 2026</span>
+      <span data-placeholder="footer-date">10 апреля 2026</span>
       &nbsp;·&nbsp;
       Tim Zinin Аудит продуктивности V2
     </div>
@@ -2000,23 +2000,23 @@ section + section {
 // DATA — replace these with actual injected values
 // ============================================================
 
-// DATA: last 8 weeks labels — format "Wk N"
-const WEEK_LABELS = ['Wk 4', 'Wk 5', 'Wk 6', 'Wk 7', 'Wk 8', 'Wk 9', 'Wk 10', 'Wk 11'];
+// DATA: last 9 weeks labels — format "Wk N"
+const WEEK_LABELS = ['Wk 1', 'Wk 2', 'Wk 3', 'Wk 4', 'Wk 5', 'Wk 6', 'Wk 7', 'Wk 8', 'Wk 9'];
 
-// DATA: commits per week (last 8 weeks)
-const DATA_COMMITS = [15, 12, 8, 25, 60, 35];
+// DATA: commits per week (weeks 1-9)
+const DATA_COMMITS = [15, 12, 8, 25, 60, 35, 301, 204, 259];
 
-// DATA: MRR per week in $ (last 8 weeks)
-const DATA_MRR_WEEKLY = [0, 200, 400, 800, 1200, 2100];
+// DATA: MRR per week in $ (weeks 1-9). Недели 7-9: нет свежих данных, держим 2100
+const DATA_MRR_WEEKLY = [0, 200, 400, 800, 1200, 2100, 2100, 2100, 2100];
 
-// DATA: active projects count per week (last 8 weeks)
-const DATA_ACTIVE_PROJECTS = [4, 5, 5, 7, 9, 7];
+// DATA: active projects count per week (weeks 1-9)
+const DATA_ACTIVE_PROJECTS = [4, 5, 5, 7, 9, 7, 32, 23, 16];
 
-// DATA: revenue breakdown for doughnut [СБОРКА, Консультации, Ботаника]
-const DATA_ДОХОД_MIX = [950, 700, 200];
+// DATA: revenue breakdown for doughnut [СБОРКА, Консультации, Marshall/другое]
+const DATA_ДОХОД_MIX = [500, 1000, 600];
 
 // DATA: MRR progress bar target %
-const MRR_TARGET_PCT = 18.5;
+const MRR_TARGET_PCT = 21;
 
 // ============================================================
 // CHART DEFAULTS
